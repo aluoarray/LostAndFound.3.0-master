@@ -1,0 +1,352 @@
+<!-- landing.html - 炫酷欢迎页 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深圳技术大学 - 失物招领平台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 粒子背景 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* 主容器 */
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            color: white;
+        }
+
+        /* Logo 区域 */
+        .logo-section {
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo-section img {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* 标题 */
+        .title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .slogan {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.7s both;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 功能特点 */
+        .features {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        }
+
+        .feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-text {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* 进入按钮 */
+        .enter-btn {
+            position: relative;
+            padding: 1rem 3rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #f15a25 0%, #ff8a50 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out 1.1s both;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .enter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .enter-btn:hover::before {
+            left: 100%;
+        }
+
+        .enter-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(241, 90, 37, 0.4);
+        }
+
+        .enter-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* 发光效果 */
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(241, 90, 37, 0.5), 0 0 40px rgba(241, 90, 37, 0.3);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(241, 90, 37, 0.8), 0 0 60px rgba(241, 90, 37, 0.5);
+            }
+        }
+
+        /* 底部信息 */
+        .footer {
+            position: absolute;
+            bottom: 2rem;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            animation: fadeIn 1s ease-out 1.5s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.7; }
+        }
+
+        /* 页面过渡效果 */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        .page-transition.active {
+            transform: translateY(0);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            .features {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <div class="particles" id="particles"></div>
+
+    <!-- 页面过渡遮罩 -->
+    <div class="page-transition" id="pageTransition"></div>
+
+    <!-- 主内容 -->
+    <div class="container">
+        <div class="logo-section">
+            {% load static %}
+            <img src="{% static 'images/LOGO.jpg' %}" alt="Logo">
+        </div>
+        
+        <h1 class="title">失物招领平台</h1>
+        <p class="subtitle">深圳技术大学</p>
+        <p class="slogan">让每一件遗失物品都能找到主人 ✨</p>
+
+        <div class="features">
+            <div class="feature">
+                <span class="feature-icon">🔍</span>
+                <span class="feature-text">智能搜索</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🤖</span>
+                <span class="feature-text">AI 匹配</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🔔</span>
+                <span class="feature-text">实时通知</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">💬</span>
+                <span class="feature-text">智能助手</span>
+            </div>
+        </div>
+
+        <a href="#" class="enter-btn glow" id="enterBtn">
+            马上进入 →
+        </a>
+
+        <div class="footer">
+            © 2025 深圳技术大学 · 大数据与互联网学院
+        </div>
+    </div>
+
+    <script>
+        // 生成粒子
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = Math.random() * 10 + 10 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // 页面过渡
+        document.getElementById('enterBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const transition = document.getElementById('pageTransition');
+            transition.classList.add('active');
+            
+            setTimeout(function() {
+                window.location.href = '{% url "MyApp:index" %}';
+            }, 600);
+        });
+
+        // 初始化
+        createParticles();
+    </script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!-- detail.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>启事详情</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-line {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .user-box img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .description {
+            line-height: 1.6;
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 2rem;
+            white-space: pre-line;
+        }
+
+        .comment-section {
+            margin-top: 2rem;
+            border-top: 1px solid #ddd;
+            padding-top: 1rem;
+        }
+
+        .comment-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .comment-box {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .comment-box textarea {
+            flex: 1;
+            padding: 0.6rem;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .comment-box button {
+            margin-left: 1rem;
+            padding: 0.6rem 1rem;
+            background-color: #f15a25;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .comment {
+            background-color: #f9f9f9;
+            padding: 0.8rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        /* 候选匹配样式 */
+        .candidate-section {
+            margin-top: 2rem;
+            border-top: 2px solid #f15a25;
+            padding-top: 1rem;
+        }
+
+        .candidate-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #f15a25;
+        }
+
+        .match-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #fafafa;
+            transition: box-shadow 0.2s;
+        }
+
+        .match-card:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .match-score {
+            background-color: #f15a25;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .match-score.high {
+            background-color: #4caf50;
+        }
+
+        .match-score.medium {
+            background-color: #ff9800;
+        }
+
+        .match-score.low {
+            background-color: #9e9e9e;
+        }
+
+        .match-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .match-meta {
+            font-size: 13px;
+            color: #666;
+            margin: 0.5rem 0;
+        }
+
+        .match-reason {
+            font-size: 14px;
+            color: #555;
+            background-color: #fff3e0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+        }
+
+        .match-actions {
+            margin-top: 0.5rem;
+        }
+
+        .match-btn {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .match-btn.view {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        .match-btn.trigger {
+            background-color: #f15a25;
+            color: white;
+            margin-left: 8px;
+        }
+
+        .no-matches {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 style="text-align:center; margin-bottom:1.5rem;">{{ post.title }}</h2>
+
+        {% if request.session.user_id == post.user.id %}
+        <div style="text-align:right; margin-bottom:1rem;">
+            <a href="{% url 'MyApp:edit_post' post.id %}" style="color:#2196f3; margin-right:16px;">编辑</a>
+            <a href="{% url 'MyApp:delete_post' post.id %}" style="color:#f44336;" onclick="return confirm('确定删除吗？');">删除</a>
+        </div>
+        {% endif %}
+
+        <div class="user-box">
+            <img src="{{ post.user.avatar.url }}" alt="用户头像"
+                style="width: 40px; height: 40px; border-radius: 50%; margin-right: 0.5rem;">
+            <span>{{ post.user.name }}</span>
+        </div>
+        <div class="info-line">
+            种类：{{ post.ItemType }}  <br />
+            时间：{{ post.PostTime|date:"Y-m-d" }} <br />
+            地点：{{ post.Location }} <br />
+        </div>
+        {% if post.Img %}
+            <img src="{{ post.Img.url }}" alt="物品图片" class="post-image">
+        {% else %}
+            <div class="description" style="text-align:center;font-size:1.2rem;color:#888;">
+                {{ post.description }}
+            </div>
+        {% endif %}
+        <div class="description">
+            {{ post.description }}
+        </div>
+
+        <!-- 候选匹配区域 -->
+        <div class="candidate-section">
+            <h3>🔍 可能匹配的帖子</h3>
+            {% if candidate_matches %}
+                {% for match in candidate_matches %}
+                <div class="match-card">
+                    <div class="match-header">
+                        <span class="match-title">
+                            {% if post.LostOrFound == '寻物启事' %}
+                                {{ match.found_post.title }}
+                            {% else %}
+                                {{ match.lost_post.title }}
+                            {% endif %}
+                        </span>
+                        <span class="match-score {% if match.rerank_confidence >= 0.7 %}high{% elif match.rerank_confidence >= 0.4 %}medium{% else %}low{% endif %}">
+                            匹配度: {{ match.rerank_confidence|floatformat:0|default:"0" }}%
+                        </span>
+                    </div>
+                    <div class="match-meta">
+                        {% if post.LostOrFound == '寻物启事' %}
+                            类型: {{ match.found_post.ItemType }} | 位置: {{ match.found_post.Location }}
+                        {% else %}
+                            类型: {{ match.lost_post.ItemType }} | 位置: {{ match.lost_post.Location }}
+                        {% endif %}
+                    </div>
+                    {% if match.rerank_reason %}
+                    <div class="match-reason">
+                        💡 {{ match.rerank_reason }}
+                    </div>
+                    {% endif %}
+                    <div class="match-actions">
+                        {% if post.LostOrFound == '寻物启事' %}
+                            <a href="{% url 'MyApp:detail' match.found_post.id %}" class="match-btn view">查看详情</a>
+                        {% else %}
+                            <a href="{% url 'MyApp:detail' match.lost_post.id %}" class="match-btn view">查看详情</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-matches">
+                    <p>暂无匹配的帖子</p>
+                    {% if request.session.user_id == post.user.id %}
+                    <a href="{% url 'MyApp:trigger_match' post.id %}" class="match-btn trigger">🔄 触发匹配</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+            
+            {% if candidate_matches and request.session.user_id == post.user.id %}
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="{% url 'MyApp:trigger_match' post.id %}" class="match-btn trigger">🔄 重新匹配</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="comment-section">
+            <h3>评论</h3>
+            {% for comment in comments %}
+            <div class="comment">
+                {{ comment.user.name }}：{{ comment.content }}
+            </div>
+            {% empty %}
+            <div class="comment">暂无评论</div>
+            {% endfor %}
+
+            {% if request.session.user_id %}
+            <form method="post" style="margin-top:1rem;">
+                {% csrf_token %}
+                <div class="comment-box">
+                    <textarea name="content" placeholder="输入评论..." required></textarea>
+                    <button type="submit">发布</button>
+                </div>
+            </form>
+            {% else %}
+            <div style="color:#888;margin-top:1rem;">请<a href="{% url 'MyApp:login' %}">登录</a>后评论</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function submitComment() {
+            const textarea = document.querySelector('.comment-box textarea');
+            const text = textarea.value.trim();
+            if (!text) {
+                alert("请输入评论内容");
+                return;
+            }
+
+            const commentDiv = document.createElement("div");
+            commentDiv.className = "comment";
+            commentDiv.textContent = `你：${text}`;
+            document.querySelector('.comment-section').insertBefore(commentDiv, document.querySelector('.comment-box'));
+            textarea.value = '';
+        }
+    </script>
+
+</body>
+
+</html>

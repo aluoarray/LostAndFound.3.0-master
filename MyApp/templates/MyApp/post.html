@@ -1,0 +1,169 @@
+<!-- post.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>发布启事</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f5f5f5;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin: 1rem 0 0.5rem;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            color: #000;
+            font-size: 14px;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+            max-height: 200px;
+        }
+
+        .submit-btn {
+            margin-top: 1.5rem;
+            width: 100%;
+            padding: 0.7rem;
+            font-size: 1rem;
+            background-color: #f15a25;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #f54607;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>发布启事</h2>
+
+        <form id="postForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label>标题：</label>
+            <input type="text" name="title" required value="{{ post.title|default:'' }}">
+
+            <label>类型：</label>
+            <select name="lost_or_found" required>
+                <option value="失物招领">失物招领</option>
+                <option value="寻物启事">寻物启事</option>
+            </select>
+
+            <label>种类：</label>
+            <select name="category" required>
+                <option>校卡</option>
+                <option>手机</option>
+                <option>数码产品</option>
+                <option>鞋服包饰</option>
+                <option>钱包</option>
+                <option>书籍</option>
+                <option>证件</option>
+                <option>钥匙</option>
+                <option>快递</option>
+                <option>其他</option>
+            </select>
+
+            <label>时间：</label>
+            <input type="date" name="date" required>
+
+            <label>大区：</label>
+            <select name="zone" required>
+                <option>A区 食堂, 宿舍（南区）, 健康与环境工程学院</option>
+                <option>B区 食堂, 创意设计学院, 外国语学院</option>
+                <option>C区 湖景食堂, 大数据与互联网学院, 图书馆</option>
+                <option>D区 城市交通与物流学院, 体育馆, 中德智能制造学院</option>
+                <option>E区 食堂, 宿舍（北区）, 校医院</option>
+                <option>F区 鑫福佳, 地铁站</option>
+                <option>校外 竹韵食堂, 临时运动场, 社康中心</option>
+            </select>
+
+            <label>描述信息：</label>
+            <textarea name="description" required></textarea>
+
+            <label>上传图片：</label>
+            <input type="file" accept="image/*" onchange="previewImage(event)" name="image">
+            <img id="preview" class="image-preview" style="display:none" />
+
+            <button type="submit" class="submit-btn">提交发布</button>
+        </form>
+    </div>
+
+    <script>
+        const locationMap = {
+            'A区 食堂, 宿舍（南区）, 健康与环境工程学院': ['食堂', '宿舍（南区）', '健康与环境工程学院'],
+            'B区 食堂, 创意设计学院, 外国语学院': ['食堂', '创意设计学院', '外国语学院'],
+            'C区 湖景食堂, 大数据与互联网学院, 图书馆': ['湖景食堂', '大数据与互联网学院', '图书馆'],
+            'D区 城市交通与物流学院, 体育馆, 中德智能制造学院': ['城市交通与物流学院', '体育馆', '中德智能制造学院'],
+            'E区 食堂, 宿舍（北区）, 校医院': ['食堂', '宿舍（北区）', '校医院'],
+            'F区 鑫福佳, 地铁站': ['鑫福佳', '地铁站'],
+            '校外 竹韵食堂, 临时运动场, 社康中心': ['竹韵食堂', '临时运动场', '社康中心']
+        };
+
+        function updateLocationOptions() {
+            const zone = document.getElementById("zoneSelect").value;
+            const locSelect = document.getElementById("locationSelect");
+            locSelect.innerHTML = '';
+            locationMap[zone].forEach(loc => {
+                const opt = document.createElement('option');
+                opt.text = loc;
+                locSelect.add(opt);
+            });
+        }
+
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const img = document.getElementById('preview');
+                img.src = reader.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        
+        window.onload = updateLocationOptions;
+
+    </script>
+
+</body>
+
+</html>

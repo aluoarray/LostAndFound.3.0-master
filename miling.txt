@@ -1,0 +1,10 @@
+cd /Users/hsr/tmp/LostAndFound.3.0-master
+
+# 2. 启动 MySQL 服务（如果没有运行）
+brew services start mysql
+source /Users/hsr/tmp/LostAndFound.3.0-master/venv/bin/activate
+# 3. 启动 Django 开发服务器
+python3 manage.py runserver
+
+重新启动 ngrok
+ngrok http 8000 --domain=preworthy-tiana-unhoroscopic.ngrok-free.dev

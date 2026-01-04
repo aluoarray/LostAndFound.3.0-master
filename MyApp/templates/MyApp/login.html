@@ -1,0 +1,307 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>登录 / 注册</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 浮动装饰 */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            left: 70%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        .shape:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            left: 85%;
+            animation-delay: 6s;
+        }
+
+        .shape:nth-child(5) {
+            width: 50px;
+            height: 50px;
+            left: 50%;
+            animation-delay: 8s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 毛玻璃容器 */
+        .container {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            width: 380px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background: linear-gradient(135deg, #f15a25 0%, #ff8a50 100%);
+            margin: 0.8rem auto 0;
+            border-radius: 2px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="number"] {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            margin: 0.6rem 0;
+            border-radius: 12px;
+            border: 2px solid #eee;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #f15a25;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(241, 90, 37, 0.1);
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            margin-top: 1.2rem;
+            background: linear-gradient(135deg, #f15a25 0%, #ff8a50 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(241, 90, 37, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(241, 90, 37, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .switch-link {
+            text-align: center;
+            margin-top: 1.2rem;
+            color: #666;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .switch-link:hover {
+            color: #f15a25;
+        }
+
+        .error {
+            color: #f44336;
+            text-align: center;
+            padding: 0.8rem;
+            background: rgba(244, 67, 54, 0.1);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 14px;
+        }
+
+        .success {
+            color: #4caf50;
+            text-align: center;
+            padding: 0.8rem;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 14px;
+        }
+
+        /* 返回首页链接 */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: #888;
+            font-size: 13px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #f15a25;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 浮动装饰 -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container" id="loginBox" {% if register %}style="display:none;"{% endif %}>
+        <h2>用户登录</h2>
+        {% if login_error %}
+            <div class="{% if '成功' in login_error %}success{% else %}error{% endif %}">{{ login_error }}</div>
+        {% endif %}
+        <form method="post" action="{% url 'MyApp:login' %}">
+            {% csrf_token %}
+            <input type="number" name="user_id" placeholder="👤 用户ID（学号）" required>
+            <input type="password" name="password" placeholder="🔒 密码" required>
+            <button class="btn" type="submit">登 录</button>
+        </form>
+        <div class="switch-link" onclick="toggleBox()">没有账号？点击注册 →</div>
+        <a href="{% url 'MyApp:landing' %}" class="back-link">← 返回首页</a>
+    </div>
+
+    <div class="container" id="registerBox" {% if register %}{% else %}style="display:none;"{% endif %}>
+        <h2>用户注册</h2>
+        {% if register_error %}
+            <div class="error">{{ register_error }}</div>
+        {% endif %}
+        <form method="post" action="{% url 'MyApp:register' %}">
+            {% csrf_token %}
+            <input type="number" name="user_id" placeholder="👤 用户ID（学号）" required>
+            <input type="text" name="name" placeholder="📝 用户名" required>
+            <input type="email" name="email" placeholder="📧 邮箱" required>
+            <input type="password" name="password" placeholder="🔒 密码" required>
+            <input type="password" name="password2" placeholder="🔒 确认密码" required>
+            <button class="btn" type="submit">注 册</button>
+        </form>
+        <div class="switch-link" onclick="toggleBox()">← 已有账号？返回登录</div>
+        <a href="{% url 'MyApp:landing' %}" class="back-link">← 返回首页</a>
+    </div>
+
+    <script>
+        function toggleBox() {
+            const login = document.getElementById('loginBox');
+            const register = document.getElementById('registerBox');
+            
+            if (login.style.display === 'none') {
+                register.style.display = 'none';
+                login.style.display = 'block';
+                login.style.animation = 'slideUp 0.4s ease-out';
+            } else {
+                login.style.display = 'none';
+                register.style.display = 'block';
+                register.style.animation = 'slideUp 0.4s ease-out';
+            }
+        }
+    </script>
+</body>
+
+</html>
